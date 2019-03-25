@@ -53,7 +53,7 @@ int main(int argc, char* argv[]){
 
 
     // converting vector of xml_nodes to vector of objects
-/*
+
     Item* item_obj;
     Creature* creature_obj;
     Room* room_obj;
@@ -92,6 +92,6 @@ int main(int argc, char* argv[]){
     {
       cout << rooms[i].name() << endl;
     }
-    */
 
+    // comment to see if github changed 
 }
