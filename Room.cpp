@@ -7,7 +7,7 @@ Room::Room(xml_node<>* room)
   xml_node<>* curr = room->first_node();
   while(curr)
   {
-    vector<string> edge;  // temp vector that contains name and direction of each border
+    Edge* temp_edge = new Edge();  // temp vector that contains name and direction of each border
 
     // checking if the objects in the room class are present in the xml file.
 
@@ -25,16 +25,15 @@ Room::Room(xml_node<>* room)
       {
         if(strcmp(bord_node->name(), "direction") == 0)
         {
-          edge.push_back(bord_node->value());
+          temp_edge->direction = bord_node->value();
         }
         if(strcmp(bord_node->name(), "name") == 0)
         {
-          edge.push_back(bord_node->name());
+          temp_edge->name = bord_node->value();
         }
         bord_node = bord_node->next_sibling();
       }
-      border.push_back(edge);
-      edge.clear();
+      border.push_back(temp_edge);
     }
     curr = curr -> next_sibling();
   }

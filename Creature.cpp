@@ -1,5 +1,6 @@
-#include <Creature.h>
+#include "Creature.h"
 
+/*
 Creature::Creature(xml_node<> *node ){
   xml_node<>* nodes = node->first_node();
   while(nodes)
@@ -30,12 +31,13 @@ Creature::Creature(xml_node<> *node ){
       }
       nodal = nodal->next_sibling();
     }
-  /*  if(strcmp(nodes->name(), "trigger") == 0)
+  if(strcmp(nodes->name(), "trigger") == 0)
     {
       Trigger.pushback(nodes.value);
     }
-*/
+
     nodes = nodes->next_sibling();
   }
 
 }
+*/

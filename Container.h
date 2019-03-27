@@ -3,6 +3,7 @@ using namespace std;
 using namespace rapidxml;
 
 class Container{
+public:
     Container(xml_node<>* );
     virtual ~Container();
     string name;

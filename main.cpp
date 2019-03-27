@@ -7,6 +7,7 @@
 
 int main(int argc, char* argv[]){
 
+
   if(argc != 2)
   {
     cout << "Enter TWO inputs!" << endl;
@@ -66,32 +67,37 @@ int main(int argc, char* argv[]){
 
     for(int i = 0; i < item_nodes.size(); i++)
     {
-      item_obj = new Item(item_nodes[i])
+      item_obj = new Item(item_nodes[i]);
       items.push_back(item_obj);
     }
 
     for(int i = 0; i < creature_nodes.size(); i++)
     {
-      creature_obj = new Creature(creature_nodes[i])
+      creature_obj = new Creature(creature_nodes[i]);
       creatures.push_back(creature_obj);
     }
 
     for(int i = 0; i < room_nodes.size(); i++)
     {
-      room_obj = new Room(room_nodes[i])
+      room_obj = new Room(room_nodes[i]);
       rooms.push_back(room_obj);
     }
 
     for(int i = 0; i < container_nodes.size(); i++)
     {
-      container_obj = new Item(container_nodes[i])
+      container_obj = new Container(container_nodes[i]);
       containers.push_back(container_obj);
     }
+
+
+      cout << "random_shit" << endl;
+      
+/*
 
     for(int i = 0; i < item_nodes.size(); i++)
     {
       cout << rooms[i].name() << endl;
     }
-
-    // comment to see if github changed 
+*/
+    // comment to see if github changed
 }
