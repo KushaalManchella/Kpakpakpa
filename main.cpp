@@ -119,7 +119,18 @@ int main(int argc, char* argv[]){
       cout << cond_copy->status->name <<endl;
     }
 
+    // Main loop to take user commands and run the game
+
+    string u_input;
+    string current_room;
+
+    // trigger with command and trigger without command
+    vector<Item*> inventory;
 
 
-    // comment to see if github changed
+
+    zork();
+
+
+
 }

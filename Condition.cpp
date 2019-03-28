@@ -16,7 +16,7 @@
     while(count)
     {
         size++;
-        cout << size << endl;
+        //cout << size << endl;
         count = count->next_sibling();
     }
 
@@ -29,7 +29,7 @@
             owner->object = curr->value();
           }
           else if(size == 2){
-            cout << "A" << endl;
+            //cout << "A" << endl;
             status->object = curr->value();
           }
         }
@@ -37,7 +37,7 @@
         // status only belongs to the status condition
         if(strcmp(curr->name(),"status") == 0)
         {
-          cout << "B" << endl;
+          //cout << "B" << endl;
           status->name = curr->value();
         }
         // owner only belongs to the owner condition
