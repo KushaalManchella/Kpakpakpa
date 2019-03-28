@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "Creature.h"
 #include "Header.h"
+#include "Zork.h"
 
 int main(int argc, char* argv[]){
 
@@ -129,7 +130,7 @@ int main(int argc, char* argv[]){
 
 
 
-    zork();
+    zork(inventory, items,creatures, rooms, containers);
 
 
 

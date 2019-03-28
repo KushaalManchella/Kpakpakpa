@@ -19,6 +19,7 @@ Room::Room(xml_node<>* room)
     if(strcmp(curr->name(), "container") == 0) {container.push_back(curr->value());}
     if(strcmp(curr->name(), "creature") == 0) {creature.push_back(curr->value());}
     if(strcmp(curr->name(), "item") == 0) {item.push_back(curr->value());}
+    if (strcmp(curr->name(), "trigger") == 0){trigger = new Trigger(curr);}
     if(strcmp(curr->name(), "border") == 0)
     {
       xml_node<>* bord_node = curr->first_node();
