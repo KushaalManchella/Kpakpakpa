@@ -14,3 +14,6 @@ Container::Container(xml_node<>* container)
     curr = curr->next_sibling();
   }
 }
+
+
+Container::~Container(){}

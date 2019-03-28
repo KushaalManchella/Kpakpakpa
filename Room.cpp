@@ -9,6 +9,7 @@ Room::Room(xml_node<>* room)
   {
     Edge* temp_edge = new Edge();  // temp vector that contains name and direction of each border
 
+
     // checking if the objects in the room class are present in the xml file.
 
     if(strcmp(curr->name(), "name") == 0){name = curr->value();}

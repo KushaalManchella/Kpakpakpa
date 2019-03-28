@@ -1,13 +1,22 @@
-#include<iostream>
-#include<sstream>
-#include<fstream>
-#include<cstdlib>
-#include<vector>
-#include<string.h>
-#include<list>
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
-#include "rapidxml_print.hpp"
+#ifndef TRIGGER_H_
+#define TRIGGER_H_
+
+
+#include "Condition.h"
+#include "Header.h"
 
 using namespace std;
 using namespace rapidxml;
+
+class Trigger{
+public:
+  Trigger(xml_node<>* );
+  virtual ~Trigger(){};
+  string type;
+  Condition* condition;
+  string print;
+  string action;
+  string command;
+
+};
+#endif /* TRIGGER_H_ */

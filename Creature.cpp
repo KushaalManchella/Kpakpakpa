@@ -1,13 +1,14 @@
 #include "Creature.h"
 
-/*
+
 Creature::Creature(xml_node<> *node ){
+
   xml_node<>* nodes = node->first_node();
   while(nodes)
   {
     if(strcmp(nodes->name(), "name") == 0)
     {
-    name = nodes->value();
+      name = nodes->value();
     }
     if(strcmp(nodes->name(), "status") == 0)
     {
@@ -15,29 +16,28 @@ Creature::Creature(xml_node<> *node ){
     }
     if(strcmp(nodes->name(), "description") == 0)
     {
-    description = nodes->value();;
+      description = nodes->value();
     }
+    // vector of vulnerabilities
     if(strcmp(nodes->name(), "vulnerability") == 0)
     {
-      vulnerability = nodes->value();
+      vulnerability.push_back(nodes->value());
     }
-    if(strcmp(nodes->name(), "turnon") == 0)
+    // create a new attack object
+    if(strcmp(nodes->name(), "attack") == 0)
     {
-      on = true;
-      xml_node<>* nodal = nodes->first_node();
-      while(nodal)
-      {
-        turnon.push_back(nodal->value());
-      }
-      nodal = nodal->next_sibling();
+      //xml_node<> *attack_node = nodes;
+      attack = new Attack(nodes);
     }
-  if(strcmp(nodes->name(), "trigger") == 0)
+    // create a new trigger object
+    if(strcmp(nodes->name(), "trigger") == 0)
     {
-      Trigger.pushback(nodes.value);
+      //xml_node<> *trigg_node = nodes;
+      trigger = new Trigger(nodes);
     }
 
     nodes = nodes->next_sibling();
   }
-
 }
-*/
+
+  Creature::~Creature(){};

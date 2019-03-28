@@ -1,15 +1,22 @@
+#ifndef CREATURE_H_
+#define CREATURE_H_
+#include "Header.h"
+#include "Attack.h"
 #include "Trigger.h"
+
 using namespace std;
 using namespace rapidxml;
 
 class Creature{
-public:
+  public:
     Creature(xml_node<>*);
     virtual ~Creature();
     string name;
     string status;
     string description;
     vector<string> vulnerability;
-    //string attack;
-    //vector<Trigger*> trigger;
+    Attack* attack;
+    Trigger* trigger;
 };
+
+#endif /* CREATURE_H_ */

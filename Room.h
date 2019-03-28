@@ -1,14 +1,20 @@
+#ifndef ROOM_H_
+#define ROOM_H_
+
+
+#include "Condition.h"
+#include "Header.h"
 #include "Trigger.h"
 
 using namespace std;
 using namespace rapidxml;
 
 class Room{
-    public:
-    typedef struct _edge {
+public:
+      typedef struct _edge{
         string direction;
         string name;
-    } Edge;
+      } Edge;
 
       Room(xml_node<>* );
       virtual ~Room();
@@ -20,8 +26,7 @@ class Room{
       vector<string> container;
       vector<string> item;
       vector<string> creature;
-    //vector<Trigger*> trigger;
-
-
-
+      Trigger* trigger;
 };
+
+#endif /* ROOM_H_ */
