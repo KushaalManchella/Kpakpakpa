@@ -350,6 +350,18 @@ vector<Item *> DeletedItems;
     return current_room;
   }
 
+  int get_current_room_item_index(string item_name)
+  {
+    for(int i = 0; i < current_room->item.size(); i++)
+    {
+      if (current_room->item[i] == item_name)
+      {
+        return i;
+      }
+    }
+    return -1;
+  }
+
     bool check_trig(string user_in, vector<Item*> &items, vector<Creature*> &creatures, vector<Room*> &rooms, vector<Container*> &containers)
   {
 
@@ -400,13 +412,12 @@ vector<Item *> DeletedItems;
       {
         for(int i= 0; i < items.size();i++)
         {
-          cout<<items[i]->name<<word<<endl;
-          cout<<word<<endl;
-          if(items[i]->name == word  )
+          if(items[i]->name == word )
           {
               playerItems.push_back(items[i]); // remmeber to add delete item from room<
-              cout<<"Item "+current_room->item[i]+" added to Inventory"<<std::endl;
-              //current_room->item.erase(current_room->item.begin() + i);
+              cout<<"Item "+items[i]->name+" added to Inventory"<<std::endl;
+
+              current_room->item.erase(current_room->item.begin() + get_current_room_item_index(word));
               return false;
           }
           // else
@@ -459,6 +470,7 @@ vector<Item *> DeletedItems;
       for (int i = 0; i < current_room->container.size(); i++)
         {
           // if there is a match
+          cout << current_room->container[i] <<endl;
           if (current_room->container[i] == curr_container)
           {
             for (int j = 0; j < containers.size(); j++)
@@ -474,7 +486,7 @@ vector<Item *> DeletedItems;
                 else
                 {
                   get_container_items(containers, j);
-                  cout << "got out" << endl;
+                  //cout << "got out" << endl;
                   return false;
                 }
               }
