@@ -1,4 +1,5 @@
 #include "Header.h"
+#include <string.h>
  Room * current_room;
 
   /*  vector<Item*> items;
@@ -7,7 +8,7 @@
     vector<Container*> containers;*/
   string n = "n";
   string s = "s";
-  string e= "e";
+  string e = "e";
   string w = "w";
 
 
@@ -15,83 +16,98 @@
   {
     return true;
   }
-    void check_trig(string user_in,vector<Item*> inventory, vector<Item*> items, vector<Creature*> creatures, vector<Room*> rooms, vector<Container*> containers)
+
+  string get_direction(string command)
   {
-    if(user_in == n)
+    if(string(command) == "n")
     {
-      if(current_room->trigger->command == n)
+      return "north";
+    }
+    else if(string(command) == "s")
+    {
+      return "south";
+    }
+    else if(string(command) == "e")
+    {
+      return "east";
+    }
+    else if(string(command) == "w")
+    {
+      return "west";
+    }
+    else
+    {
+      return 0;
+    }
+  }
+
+  Room* assign_room(Room* current_room, string user_in, vector<Room*> rooms)
+  {
+    for (int i = 0; i < current_room->border.size(); i++)
+    {
+      // if the border is the same direction
+      if (strcmp(get_direction(user_in), current_room->border[i]->direction) ==0)
       {
-        if(current_room->trigger->condition == NULL)
-        {
-          for(int i = 0; i < current_room->border.size(); i++)
-            {
-              if(current_room->border[i]->direction == "north")
-              {
-                for(int i = 0; i < rooms.size();i++)
-                {
-                  if(rooms[i]->name == current_room->border[i]->name)
-                  {
-                    current_room = rooms[i];
-                  }
-                }
-              }
-            }
-        }
-       else
-        {
-          if(check_cond(current_room->trigger->condition,inventory))
+        // set the value of next room equal to the name of the correct border room
+        string next_room = current_room->border[i]->name;
+        // iterate through rooms to find the room that matches next room
+        for (int i = 0; i < rooms.size(); i++) {
+          if (strcmp(rooms[i]->name, next_room)==0)
           {
-            cout<<current_room->trigger->print<<std::endl;
+            current_room = rooms[i];
+            cout<<current_room->name<<endl;
+            cout<<current_room->description<<endl;
+            return current_room;
           }
         }
       }
       else
       {
-          cout<<"there is nothing here"<<std::endl;
+        cout << "Can't go that way!" << endl;
+        return current_room;
       }
     }
-    if(user_in ==  s)
+  }
+
+    void check_trig(string user_in,vector<Item*> inventory, vector<Item*> items, vector<Creature*> creatures, vector<Room*> rooms, vector<Container*> containers)
+  {
+    if ( (strcmp(user_in, "n")==0) || (strcmp(user_in, 's')==0) || (strcmp(user_in, 'e')==0) || (strcmp(user_in, 'w')==0) )
     {
-      if(current_room->trigger->command ==  s)
+      // if the room has a trigger
+      if (current_room->trigger)
       {
-        cout<<"south we go"<<std::endl;
+        // if the user input is equal to the trigger's command
+        if (strcmp(user_in, current_room->trigger->command)==0)
+        {
+          // if the trigger has a condition
+          if (current_room->trigger->condition)
+          {
+            // if the condition is met
+            if(check_cond(current_room->trigger->condition, inventory))
+            {
+              // look through the borders to find the room
+              current_room = assign_room(current_room, user_in, rooms);
+              return;
+            }
+          }
+        }
       }
       else
       {
-          cout<<"there is nothing here"<<std::endl;
-      }
-    }
-    if(user_in == e)
-    {
-      if(current_room->trigger->command == e)
-      {
-        cout<<"east we go"<<std::endl;
-      }
-      else
-      {
-          cout<<"there is nothing here"<<std::endl;
-      }
-    }
-    if(user_in==w)
-    {
-      if(current_room->trigger->command == w)
-      {
-        cout<<"west we go"<<std::endl;
-      }
-      else
-      {
-          cout<<"there is nothing here"<<std::endl;
+        current_room = assign_room(current_room, user_in, rooms);
+        return;
       }
     }
 
-
+    // This is where Tinu's code went
   }
 
 
   void zork(vector<Item*> inventory, vector<Item*> items, vector<Creature*> creatures, vector<Room*> rooms, vector<Container*> containers)
   {
     current_room = rooms[0];
-    cout<<current_room->description<<std::endl;
+    cout<<current_room->name<<endl;
+    cout<<current_room->description<<endl;
     while(true)
     {
       string u_input;
@@ -101,8 +117,6 @@
         break;
       }
       check_trig(u_input,inventory,items, creatures,rooms,containers);
-
-
 
 
     }
