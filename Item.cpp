@@ -6,7 +6,8 @@ Item::Item(xml_node<>* node)
   on  = false;
   // Step into the nodes of the item
   xml_node<>* nodes = node->first_node();
-  Turnon* turnon = new Turnon();
+  turnon = new Turnon();
+  turnon->action = "nothing";
   // Iterate through siblings of item
   while(nodes)
   {
@@ -28,7 +29,6 @@ Item::Item(xml_node<>* node)
     }
     if(strcmp(nodes->name(), "turnon") == 0)
     {
-      on = true;
       xml_node<>* nodal = nodes->first_node();
       while(nodal)
       {

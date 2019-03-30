@@ -93,32 +93,46 @@ int main(int argc, char* argv[]){
       containers.push_back(container_obj);
     }
 
-    cout << "rooms :" << endl;
-    for(int i = 0; i < room_nodes.size(); i++)
+
+
+
+
+    for(int i = 0; i < rooms[1]->container.size(); i++)
     {
-      cout << rooms[i]->name << endl;
-    }
-    cout << endl;
-    cout << "containers :" << endl;
-    for(int i = 0; i < container_nodes.size(); i++)
-    {
-      cout << containers[i]->name << endl;
-    }
-    cout<< endl;
-    cout << "items :" << endl;
-    for(int i = 0; i < item_nodes.size(); i++)
-    {
-      cout << items[i]->name << endl;
+      cout << rooms[1]->container[i];
     }
 
-    cout<< endl;
-    cout << "creatures :" << endl;
-    for(int i = 0; i < creature_nodes.size(); i++)
-    {
-      cout << creatures[i]->name << endl;
-      Condition* cond_copy = creatures[i]->trigger->condition;
-      cout << cond_copy->status->name <<endl;
-    }
+
+    // cout << "rooms :" << endl;
+    // for(int i = 0; i < room_nodes.size(); i++)
+    // {
+    //   cout << rooms[i]->name << endl;
+    //   for(int j = 0; j < rooms[i]->container.size(); i++)
+    //   {
+    //     cout << rooms[i]->container[j];
+    //   }
+    // }
+    // cout << endl;
+    // cout << "containers :" << endl;
+    // for(int i = 0; i < container_nodes.size(); i++)
+    // {
+    //   cout << containers[i]->name << endl;
+    // }
+    // cout<< endl;
+    // cout << "items :" << endl;
+    // for(int i = 0; i < item_nodes.size(); i++)
+    // {
+    //   cout << items[i]->name << endl;
+    // }
+    //
+    // cout<< endl;
+    // cout << "creatures :" << endl;
+    // for(int i = 0; i < creature_nodes.size(); i++)
+    // {
+    //   cout << creatures[i]->name << endl;
+    //   Condition* cond_copy = creatures[i]->trigger->condition;
+    //   cout << cond_copy->status->name <<endl;
+    // }
 
     // Main loop to take user commands and run the game
 

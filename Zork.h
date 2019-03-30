@@ -1,127 +1,3 @@
-// #include "Header.h"
-// #include <string.h>
-//  Room * current_room;
-//
-//   /*  vector<Item*> items;
-//     vector<Creature*> creatures;
-//     vector<Room*> rooms;
-//     vector<Container*> containers;*/
-//   string n = "n";
-//   string s = "s";
-//   string e = "e";
-//   string w = "w";
-//
-//
-//   bool check_cond(Condition * condition,vector<Item *> inventory)
-//   {
-//     return true;
-//   }
-//
-//   string get_direction(string command)
-//   {
-//     if(string(command) == "n")
-//     {
-//       return "north";
-//     }
-//     else if(string(command) == "s")
-//     {
-//       return "south";
-//     }
-//     else if(string(command) == "e")
-//     {
-//       return "east";
-//     }
-//     else if(string(command) == "w")
-//     {
-//       return "west";
-//     }
-//     else
-//     {
-//       return 0;
-//     }
-//   }
-//
-//   Room* assign_room(Room* current_room, string user_in, vector<Room*> rooms)
-//   {
-//     for (int i = 0; i < current_room->border.size(); i++)
-//     {
-//       // if the border is the same direction
-//       if (strcmp(get_direction(user_in), current_room->border[i]->direction) ==0)
-//       {
-//         // set the value of next room equal to the name of the correct border room
-//         string next_room = current_room->border[i]->name;
-//         // iterate through rooms to find the room that matches next room
-//         for (int i = 0; i < rooms.size(); i++) {
-//           if (strcmp(rooms[i]->name, next_room)==0)
-//           {
-//             current_room = rooms[i];
-//             cout<<current_room->name<<endl;
-//             cout<<current_room->description<<endl;
-//             return current_room;
-//           }
-//         }
-//       }
-//       else
-//       {
-//         cout << "Can't go that way!" << endl;
-//         return current_room;
-//       }
-//     }
-//   }
-//
-//     void check_trig(string user_in,vector<Item*> inventory, vector<Item*> items, vector<Creature*> creatures, vector<Room*> rooms, vector<Container*> containers)
-//   {
-//     if ( (strcmp(user_in, "n")==0) || (strcmp(user_in, 's')==0) || (strcmp(user_in, 'e')==0) || (strcmp(user_in, 'w')==0) )
-//     {
-//       // if the room has a trigger
-//       if (current_room->trigger)
-//       {
-//         // if the user input is equal to the trigger's command
-//         if (strcmp(user_in, current_room->trigger->command)==0)
-//         {
-//           // if the trigger has a condition
-//           if (current_room->trigger->condition)
-//           {
-//             // if the condition is met
-//             if(check_cond(current_room->trigger->condition, inventory))
-//             {
-//               // look through the borders to find the room
-//               current_room = assign_room(current_room, user_in, rooms);
-//               return;
-//             }
-//           }
-//         }
-//       }
-//       else
-//       {
-//         current_room = assign_room(current_room, user_in, rooms);
-//         return;
-//       }
-//     }
-//
-//     // This is where Tinu's code went
-//   }
-//
-//
-//   void zork(vector<Item*> inventory, vector<Item*> items, vector<Creature*> creatures, vector<Room*> rooms, vector<Container*> containers)
-//   {
-//     current_room = rooms[0];
-//     cout<<current_room->name<<endl;
-//     cout<<current_room->description<<endl;
-//     while(true)
-//     {
-//       string u_input;
-//       getline(cin, u_input);
-//       if(string(u_input) == "q")
-//       {
-//         break;
-//       }
-//       check_trig(u_input,inventory,items, creatures,rooms,containers);
-//
-//
-//     }
-//   }
-
 #include "Header.h"
 #include <string.h>
 #include "Item.h"
@@ -196,8 +72,57 @@ vector<Item *> DeletedItems;
   //     }
   // }
 
+//  getContainerIndex(word,vector<Container *> & containers);
+// itemIndex = getItemIndex(word,containers[index]);
+void updateRoom(vector<Room *> & rooms, Room * room)
+{
+  for(int i= 0; i< rooms.size();i++)
+  {
+    if(room->name == rooms[i]->name)
+    {
+      rooms.erase(rooms.begin() + i);
+      rooms.push_back(room);
+      return;
+    }
 
+  }
+}
+int getItemIndex(string word, Container * container)
+{
+  for(int j =  0; j < container->item.size();j++)
+  {
+    if(container->item[j]== word)
+    {
+      return j;
+    }
+  }
+}
 
+int getContainerIndex(string word,vector<Container *> & containers )
+{
+  for(int i = 0; i < containers.size();i++)
+  {
+    for(int j =  0; j < containers[i]->item.size();j++)
+    {
+      if(containers[i]->item[j]== word)
+      {
+        return i;
+      }
+    }
+  }
+}
+
+ void removeFromInventory(string word)
+ {
+   for(int i = 0; i < playerItems.size();i++)
+   {
+     if(playerItems[i]->name == word)
+     {
+       playerItems.erase(playerItems.begin() + i);
+      break;
+     }
+   }
+ }
   void get_container_items(vector<Container*> &containers, int j)
   {
     cout<<containers[j]->name+" contains..."<<endl;
@@ -205,7 +130,8 @@ vector<Item *> DeletedItems;
     {
       cout<<containers[j]->item[i]<<endl;
       current_room->item.push_back(containers[j]->item[i]); //
-      containers[j]->item.erase(containers[j]->item.begin() + i);
+      //updateRoom(rooms,current_room);
+      //containers[j]->item.erase(containers[j]->item.begin() + i);
     }
     return;
   }
@@ -221,6 +147,17 @@ vector<Item *> DeletedItems;
       }
   }
 
+  Item* getItemFromRoom(string name, vector<Item*> items)
+  {
+      for(int i = 0; i < items.size(); i++)
+      {
+        if( name == items[i]->name)
+        {
+          return items[i];
+        }
+      }
+  }
+
   bool checkForItem(string word) // checks for item in room
   {
     for(int i = 0; i < current_room->item.size();i++)
@@ -231,6 +168,28 @@ vector<Item *> DeletedItems;
           }
         }
         return false;
+  }
+
+  bool itemInContainer(string word,vector<Container *> containers) // checks for item in room
+  {
+    for(int i = 0; i < containers.size();i++)
+    {
+      for(int j =  0; j < containers[i]->item.size();j++)
+      {
+        if(containers[i]->item[j]== word)
+        {
+          for(int k = 0; k < current_room->container.size(); i++)
+          {
+            if(current_room->container[i] == containers[i]->name)
+            {
+                return true;
+            }
+          }
+
+        }
+      }
+    }
+    return false;
   }
 
   bool checkInventory(string word)
@@ -361,8 +320,170 @@ vector<Item *> DeletedItems;
     }
     return -1;
   }
+ /*
+ Add (object) to (room/container) – creates instance of object with a specific owner (does not work on the player's inventory).
+ Delete (object) – removes object references from game, but the item can still be brought back into the game using the 'Add' command. If a room is removed other rooms will have references to the removed room as a 'border' that was removed, but there is no means for adding a room back in.
+ Update (object) to (status) – creates new status for object that can be checked by triggers
+ Game Over – ends the game with a declaration of “Victory!”
+ */
+  void action(string action, vector<Item*> &items, vector<Container*> &containers, vector<Room*> &rooms, vector<Creature*> &creatures, int* end_game)
+  {
+    istringstream ss(action);
+    string word;
+    ss>> word;
+    if(word == "Add")
+    {
+      string object;
+      ss>> object;
+      string owner;
+      ss>> owner; // "to"
+      ss>> owner; // owner
+      // check through non deleted items
+      for (int i = 0; i < items.size(); i++)
+      {
+        // find the items object with the corresponding name
+        if (items[i]->name == object)
+        {
+          // look through rooms for match of owner
+          for (int j = 0; j < rooms.size(); j++)
+          {
+            // find the rooms object with the corresponding name
+            if (rooms[j]->name == owner)
+            {
+              // push item into room's items
+              rooms[j]->item.push_back(items[i]->name);
+              return;
+            }
+          }
+          // look through containers for match of owner
+          for (int j = 0; j < containers.size(); j++)
+          {
+            // find the containers object with the corresponding name
+            if (containers[j]->name == owner)
+            {
+              // push item into room's items
+              containers[j]->item.push_back(items[i]->name);
+              return;
+            }
+          }
+        }
+      }
+      // check through deleted items
+      for (int i = 0; i < DeletedItems.size(); i++)
+      {
+        if (DeletedItems[i]->name == object)
+        {
+          // look through rooms for match of owner
+          for (int j = 0; j < rooms.size(); j++)
+          {
+            // find the rooms object with the corresponding name
+            if (rooms[j]->name == owner)
+            {
+              // push item into room's items
+              rooms[j]->item.push_back(DeletedItems[i]->name);
+              items.push_back(DeletedItems[i]);
+              return;
+            }
+          }
+          // look through containers for match of owner
+          for (int j = 0; j < containers.size(); j++)
+          {
+            // find the containers object with the corresponding name
+            if (containers[j]->name == owner)
+            {
+              // push item into room's items
+              containers[j]->item.push_back(DeletedItems[i]->name);
+              items.push_back(DeletedItems[i]);
+              return;
+            }
+          }
+        }
+      }
+    }
+    else if(word == "Delete")
+    {
+      string object;
+      ss>>object;
+      for(int i = 0; i<items.size();i++)
+      {
+        if(items[i]->name == object)
+        {
+          DeletedItems.push_back(items[i]);
+          items.erase(items.begin() + i);
+        }
+      }
+        for(int i = 0; i<current_room->item.size();i++)
+        {
+          if(current_room->item[i] == object)
+          {
+            current_room->item.erase(current_room->item.begin() + i);
+          }
+        }
+      return;
+    }
+    else if(word == "Update")
+    {
+      string object;
+      string u_status;
+      ss>> object; // item
+      ss>> u_status; // to
+      ss>> u_status;  // status
 
-    bool check_trig(string user_in, vector<Item*> &items, vector<Creature*> &creatures, vector<Room*> &rooms, vector<Container*> &containers)
+      // updating status of item
+      for(int i = 0; i<items.size();i++)
+      {
+        if(items[i]->name == object)
+        {
+          items[i]->status = u_status;
+          return;
+        }
+      }
+
+      //updating status of containers
+      for(int i = 0; i<containers.size();i++)
+      {
+        if(containers[i]->name == object)
+        {
+          containers[i]->status = u_status;
+          return;
+        }
+      }
+
+      //updating status of rooms
+      for(int i = 0; i<rooms.size();i++)
+      {
+        if(rooms[i]->name == object)
+        {
+          rooms[i]->status = u_status;
+          return;
+        }
+      }
+
+      //updating status of creature
+      for(int i = 0; i<creatures.size();i++)
+      {
+        if(creatures[i]->name == object)
+        {
+          creatures[i]->status = u_status;
+          return;
+        }
+      }
+    }
+    else if(word == "Game")
+    {
+      string over;
+      ss >> over;  // over
+
+      if(over == "Over")
+      {
+        *end_game = 1;
+      }
+
+    }
+  }
+
+
+    bool check_trig(string user_in, vector<Item*> &items, vector<Creature*> &creatures, vector<Room*> &rooms, vector<Container*> &containers, int* end_game)
   {
 
     istringstream ss(user_in); // split into words
@@ -408,6 +529,19 @@ vector<Item *> DeletedItems;
     if(word == "take")
     {
       ss >> word;// next word
+      if(itemInContainer(word,containers))
+       {
+         int index;
+         int itemIndex;
+         playerItems.push_back(getItemFromRoom(word, items));
+         index = getContainerIndex(word, containers);
+         itemIndex = getItemIndex(word,containers[index]);
+         containers[index]->item.erase(containers[index]->item.begin() + itemIndex);
+         current_room->item.erase(current_room->item.begin() + get_current_room_item_index(word));
+         updateRoom(rooms, current_room);
+         cout<<"Item "+items[index]->name+" added to Inventory"<<std::endl;
+         return false;
+       }
       if(checkForItem(word)) // checks for item in the room
       {
         for(int i= 0; i < items.size();i++)
@@ -416,8 +550,8 @@ vector<Item *> DeletedItems;
           {
               playerItems.push_back(items[i]); // remmeber to add delete item from room<
               cout<<"Item "+items[i]->name+" added to Inventory"<<std::endl;
-
               current_room->item.erase(current_room->item.begin() + get_current_room_item_index(word));
+              updateRoom(rooms, current_room);
               return false;
           }
           // else
@@ -426,10 +560,13 @@ vector<Item *> DeletedItems;
           //   return true;
           // }
         }
+
       }
+
+
       else
       {
-        cout<<word+" not in room"<<endl;
+        cout<<word+" not found"<<endl;
         return false;
       }
     }
@@ -443,6 +580,7 @@ vector<Item *> DeletedItems;
       }
       else
       {
+        cout<<"playerItems size:" << playerItems.size() << endl;
         cout<<"Inventory:"<<endl;
         for (int i = 0; i < playerItems.size(); i++)
         {
@@ -466,22 +604,29 @@ vector<Item *> DeletedItems;
           return true; // false to break the loop in the function zork
         }
       }
+      int cont = 0;
       // check through the containers for the one matching the input
       for (int i = 0; i < current_room->container.size(); i++)
         {
+
           // if there is a match
-          cout << current_room->container[i] <<endl;
+          //cout << current_room->container[i] <<endl;
           if (current_room->container[i] == curr_container)
           {
             for (int j = 0; j < containers.size(); j++)
             {
               if (containers[j]->name == curr_container)
               {
-                if (containers[j]->item.size() == 0)
+                cont = 1;
+                if (containers[j]->item.size() == 0  &&  containers[j]->status != "locked")
                 {
-                  cout<<containers[j]->name+" is empty"<<endl;
-                  return false;
-                }
+                    cout<<containers[j]->name+" is empty"<<endl;
+                    return false;
+                  }
+                  else if(containers[j]->item.size() == 0  &&  containers[j]->status == "locked")
+                  {
+                    cout<<containers[j]->name+" is locked"<<endl;
+                  }
                 // if the container is not empty
                 else
                 {
@@ -494,32 +639,181 @@ vector<Item *> DeletedItems;
             // if the container is empty
 
           }
-          else
-          {
-            cout<<curr_container+" is not in this room"<<endl;
-            return false;
-          }
+
+        }
+        if(cont == 0)
+        {
+          cout<<curr_container+" is not in this room"<<endl;
+          return false;
         }
     }
+    /*
     else if(word == "turn")
     {
       ss >> word;
       if (word == "on")
       {
-
-        ss >> word;
-        if(checkInventory(word))
+        string item;
+        ss >> item;
+        if(checkInventory(item))
         {
           Item * action_item = getItem(word);
-        //  action(action_item->action,containers,items);
+          cout<<action_item->turnon->print<<endl;
+        //action(action_item->action,containers,items);
+
           return false;
         }
         else
         {
-          cout<<"you do not poessess this item"<<endl;
+          cout<<"you do not possess this item"<<endl;
           return false;
         }
       }
+    }
+    */
+    else if(word == "drop")
+    {
+      ss >>word;
+      if(!checkInventory(word))
+      {
+        cout<<"you do not possess this item"<<endl;
+      }
+      else
+      {
+        //Item * item = getItem(word);
+        current_room->item.push_back(word);
+        //updateRoom(rooms, current_room);
+        removeFromInventory(word);
+        cout<<word<<" dropped"<<endl;
+      }
+
+
+    }
+    else if(word == "read")
+    {
+      ss >> word;
+      if(!checkInventory(word))
+      {
+        cout << "you do not possess this item" << endl;
+      }
+      else
+      {
+        Item* item = getItem(word);
+
+        cout << item->writing << endl;
+      }
+
+    }
+    else if(word == "put")
+    {
+      string item;
+      ss>>item;
+      if(!checkInventory(item))
+      {
+        cout << "you do not possess this item" << endl;
+        return false;
+      }
+      ss>>word;
+      ss>>word;
+      //container in room
+
+       int cExist = 0;
+       int deny = 0;
+      for (int i = 0; i < current_room->container.size(); i++)
+        {
+            if(current_room->container[i] == word)
+            {
+              cExist = 1;
+              for(int j = 0; j< containers.size(); j++)
+              {
+                if(containers[j]->name == word)
+                {
+                  if(containers[j]->accept.size() == 0)
+                  {
+                    containers[j]->item.push_back(item);
+                    //print it has been added
+                    removeFromInventory(item);
+                    cout<<"Item "+item+" added to "+ containers[j]->name<<endl;
+                    return false;
+                  }
+                  else
+                  {
+                      for(int k = 0; k < containers[j]->accept.size();k++)
+                      {
+                        if(containers[j]->accept[k] == word)
+                        {
+                          deny = 1;
+                          containers[j]->item.push_back(item);
+                          removeFromInventory(item);
+                          if(check_cond(containers[j]->trigger->condition,items,containers))
+                          {
+                              // look through the borders to find the room
+                              cout<<containers[j]->trigger->print<<std::endl;
+                              action(containers[j]->trigger->action,items,containers,rooms,creatures,end_game);
+                              return false;
+                          }
+                          /////////////////////////////////////////////////////////////////////////
+                        }
+                      }
+                  }
+
+                }
+
+              }
+            }
+        }
+
+        if(cExist == 0)
+        {
+          cout<<"Container doesnt exist"<<endl;
+        }
+        if(deny == 0)
+        {
+          cout<<"You can't do that!"<<endl;
+        }
+
+    }
+
+    else if (word == "turn")
+    {
+      string item;
+      ss>>item; // "on"
+      ss>>item; // item
+      if (checkInventory(item))
+      {
+        for (int i = 0; i < items.size(); i++)
+        {
+          if (items[i]-> name == item)
+          {
+            if(items[i]->turnon->action !="nothing")
+            {
+              if (items[i]->on)
+              {
+
+                cout<<item+" is already on"<<endl;
+                return false;
+              }
+              else
+              {
+                // UPDATE ITEM *******
+                cout<<items[i]->turnon->print<<endl;
+                action(items[i]->turnon->action, items, containers, rooms, creatures, end_game);
+                return false;
+              }
+            }
+            else
+            {
+              cout<<"cannot turn "+item+" on"<<endl;
+              return false;
+            }
+          }
+        }
+      }
+      else
+      {
+        cout<<"you do not possess this"<<endl;
+      }
+
     }
     else
     {
@@ -527,12 +821,11 @@ vector<Item *> DeletedItems;
       return false;
     }
 
-
-    // This is where Tinu's code went
   }
 
   void zork(vector<Item*> inventory, vector<Item*> &items, vector<Creature*> &creatures, vector<Room*> &rooms, vector<Container*> &containers)
   {
+    int end_game = 0;
     current_room = rooms[0];
     cout<<current_room->name<<endl;
     cout<<current_room->description<<endl;
@@ -541,14 +834,20 @@ vector<Item *> DeletedItems;
     {
 
       string u_input;
+      updateRoom(rooms, current_room);
       getline(cin, u_input);
       if(string(u_input) == "q")
       {
         break;
       }
-      game_state = check_trig(u_input,items, creatures,rooms,containers);
+      game_state = check_trig(u_input,items, creatures,rooms,containers, &end_game);
       if(game_state == true)
       {
+        break;
+      }
+      if((end_game) == 1)
+      {
+        cout << "Victory!" << endl;
         break;
       }
     /*  cout<<"Current Room is "<<current_room->name<<std::endl;

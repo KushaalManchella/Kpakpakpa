@@ -3,7 +3,6 @@
 Container::Container(xml_node<>* container)
 {
   xml_node<>* curr = container->first_node();
-
   while(curr)
   {
     if(strcmp(curr->name(), "accept") == 0) {accept.push_back(curr->value());}

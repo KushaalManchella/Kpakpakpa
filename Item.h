@@ -21,6 +21,7 @@ public:
     string description;
     string writing;
     Trigger* trigger;
+    Turnon* turnon;
 
 };
 #endif /* ITEM_H_ */
